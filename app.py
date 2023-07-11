@@ -4,15 +4,19 @@ from flask_migrate import Migrate
 from flask_restx import Api, Resource
 from flask_swagger_ui import get_swaggerui_blueprint
 
-
 app = Flask(__name__)
+
+# Initialize Flask-RestX API
 api = Api(app, version='1.0', title='Task Management API', description='API endpoints for managing tasks')
 
+# Configure the SQLAlchemy database connection
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:rawad.18@localhost:5432/task_manager'
 
+# Initialize SQLAlchemy and database migration
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+# Configure Swagger UI
 SWAGGER_URL = '/swagger'
 API_URL = '/swagger.json'
 swaggerui_blueprint = get_swaggerui_blueprint(
@@ -34,7 +38,7 @@ class Task(db.Model):
     due_date = db.Column(db.Date)
     category = db.Column(db.String(50))
 
-    def __init__(self, title, description, priority,due_date,category):
+    def __init__(self, title, description, priority, due_date, category):
         self.title = title
         self.description = description
         self.priority = priority
@@ -122,5 +126,7 @@ class TaskResource(Resource):
         db.session.commit()
 
         return jsonify({'message': 'Task deleted successfully'}), 200
+
+
 if __name__ == '__main__':
     app.run(debug=True)
