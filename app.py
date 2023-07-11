@@ -125,7 +125,7 @@ class TaskResource(Resource):
         db.session.delete(task)
         db.session.commit()
 
-        return jsonify({'message': 'Task deleted successfully'}), 200
+        return {'message': 'Task deleted successfully'}, 200
 
 
 if __name__ == '__main__':
